@@ -7,7 +7,7 @@
 import { readdirSync, readFileSync, statSync } from "node:fs";
 import { join, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
-import { deals, CHECKED_AT, SOURCES } from "../app/data.js";
+import { deals, CHECKED_AT, CHECKED_AT_V2, SOURCES } from "../app/data.js";
 import { discountPct, savings, ledgerStats, applyFilters } from "../app/filters.js";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
@@ -22,7 +22,7 @@ function check(ok, label, detail = "") {
 }
 
 const REQUIRED = ["id", "title", "store", "category", "price", "was", "url", "checked", "source", "verdict", "evidence"];
-const STORES = ["Amazon", "Best Buy", "Walmart"];
+const STORES = ["Amazon", "Best Buy", "Walmart", "Target", "Newegg"];
 const VERDICTS = new Set(["NEW LOW", "STRONG", "ROUTINE"]);
 
 // --- Every deal is complete and its numbers add up -----------------------
@@ -35,7 +35,7 @@ for (const d of deals) {
   ids.add(d.id);
   check(typeof d.price === "number" && d.price > 0, `deal ${d.id} price is a positive number`);
   check(typeof d.was === "number" && d.was > d.price, `deal ${d.id} usual price is above the sale price`, `$${d.price} vs $${d.was}`);
-  check(d.checked === CHECKED_AT, `deal ${d.id} checked at the ledger's check time`);
+  check(d.checked === CHECKED_AT || d.checked === CHECKED_AT_V2, `deal ${d.id} checked at one of the ledger's check times`, d.checked);
   check(Object.values(SOURCES).includes(d.source), `deal ${d.id} source is a named roundup`);
   check(VERDICTS.has(d.verdict), `deal ${d.id} verdict is one of NEW LOW / STRONG / ROUTINE`);
   check(STORES.includes(d.store), `deal ${d.id} store is Amazon, Best Buy or Walmart`);
@@ -52,7 +52,7 @@ for (const d of deals) {
   }
   // The store link must name the store that sells it.
   const host = new URL(d.url).hostname;
-  const expected = d.store === "Amazon" ? "amazon.com" : d.store === "Best Buy" ? "bestbuy.com" : "walmart.com";
+  const expected = { Amazon: "amazon.com", "Best Buy": "bestbuy.com", Walmart: "walmart.com", Target: "target.com", Newegg: "newegg.com" }[d.store];
   check(host.endsWith(expected), `deal ${d.id} link goes to its store`, d.url);
   // Cross-store prices: either this row is the cheapest (every `also`
   // price is higher), or the evidence says plainly that another store is
@@ -73,9 +73,11 @@ check(
   "verdict counts sum to the deal total",
   JSON.stringify(stats.verdicts),
 );
-check(stats.total >= 24, "ledger holds at least 24 deals", `${stats.total}`);
-check(stats.stores.length >= 3, "ledger covers at least 3 stores", stats.stores.join(", "));
-check(stats.categories.length >= 8, "ledger covers at least 8 categories", `${stats.categories.length}`);
+check(stats.total >= 48, "ledger holds at least 48 deals", `${stats.total}`);
+check(stats.stores.length >= 5, "ledger covers at least 5 stores", stats.stores.join(", "));
+check(deals.filter((d) => d.store === "Target").length >= 5, "at least 5 Target deals", `${deals.filter((d) => d.store === "Target").length}`);
+check(deals.filter((d) => d.store === "Newegg").length >= 3, "at least 3 Newegg deals", `${deals.filter((d) => d.store === "Newegg").length}`);
+check(stats.categories.length >= 12, "ledger covers at least 12 categories", `${stats.categories.length}`);
 check(stats.totalSavings > 0, "total savings is positive", `$${stats.totalSavings}`);
 check(stats.verdicts["NEW LOW"] >= 5, "at least 5 NEW LOW verdicts", `${stats.verdicts["NEW LOW"]}`);
 check(stats.verdicts["ROUTINE"] >= 3, "at least 3 ROUTINE verdicts (the ledger discriminates)", `${stats.verdicts["ROUTINE"]}`);
@@ -89,6 +91,21 @@ check(mba.also?.[0]?.price === mbb.price, "MacBook Amazon row cites the Best Buy
 const app3a = deals.find((d) => d.id === "airpods-pro-3");
 const app3w = deals.find((d) => d.id === "airpods-pro-3-walmart");
 check(app3w.also?.[0]?.price === app3a.price, "AirPods Walmart row cites the Amazon price");
+const app3t = deals.find((d) => d.id === "airpods-pro-3-target");
+check(app3t.also?.[0]?.price === app3a.price, "AirPods Target row cites the Amazon price");
+check(app3a.also?.some((a) => a.store === "Target" && a.price === app3t.price), "AirPods Amazon row cites the Target price");
+const sw2a = deals.find((d) => d.id === "switch-2-bundle");
+const sw2t = deals.find((d) => d.id === "switch-2-bundle-target");
+check(sw2t.also?.[0]?.price === sw2a.price, "Switch 2 Target row cites the Amazon price");
+check(sw2a.also?.[0]?.price === sw2t.price, "Switch 2 Amazon row cites the Target price");
+const bosea = deals.find((d) => d.id === "bose-qc");
+const boset = deals.find((d) => d.id === "bose-qc-target");
+check(boset.also?.[0]?.price === bosea.price, "Bose Target row cites the Amazon price");
+check(bosea.also?.[0]?.price === boset.price, "Bose Amazon row cites the Target price");
+const dsa = deals.find((d) => d.id === "dualsense");
+const dst = deals.find((d) => d.id === "dualsense-nova-pink");
+check(dst.also?.[0]?.price === dsa.price, "DualSense Target row cites the Amazon price");
+check(dsa.also?.[0]?.price === dst.price, "DualSense Amazon row cites the Target price");
 
 // --- Filters work ----------------------------------------------------------
 check(applyFilters(deals, { category: "TVs" }).every((d) => d.category === "TVs"), "category filter keeps only TVs");

@@ -29,10 +29,14 @@ function compareRows(d) {
   if (!d.also || d.also.length === 0) return "";
   const rows = [{ store: d.store, price: d.price, here: true }, ...d.also]
     .sort((a, b) => a.price - b.price)
-    .map(
-      (r) =>
-        `<tr${r.here ? ' class="here"' : ""}><td>${escape(r.store)}</td><td>${usd(r.price)}</td><td>${r.here ? "This ledger's price — cheapest" : `+${usd(r.price - d.price)} more`}</td></tr>`,
-    )
+    .map((r) => {
+      if (r.here) {
+        return `<tr class="here"><td>${escape(r.store)}</td><td>${usd(r.price)}</td><td>This ledger's price</td></tr>`;
+      }
+      const diff = r.price - d.price;
+      const note = diff > 0 ? `+${usd(diff)} more` : `${usd(-diff)} less`;
+      return `<tr><td>${escape(r.store)}</td><td>${usd(r.price)}</td><td>${note}</td></tr>`;
+    })
     .join("");
   return `<h3>Same product, other stores</h3>
 <table class="compare"><thead><tr><th>Store</th><th>Price</th><th>Difference</th></tr></thead><tbody>${rows}</tbody></table>`;
@@ -52,7 +56,7 @@ export function dealRow(d) {
 
 export function proofStrip(stats) {
   return `<section class="proof" aria-label="The ledger in numbers">
-  <div class="box"><b>${stats.total}</b><span>deals checked</span><i>every price read 27 Nov</i></div>
+  <div class="box"><b>${stats.total}</b><span>deals checked</span><i>every price read 27–28 Nov</i></div>
   <div class="box"><b>${stats.stores.length}</b><span>stores</span><i>${stats.stores.map(escape).join(" · ")}</i></div>
   <div class="box"><b>${stats.categories.length}</b><span>categories</span><i>TVs to toys</i></div>
   <div class="box"><b>${usd0(stats.totalSavings)}</b><span>total savings</span><i>sale vs usual price</i></div>

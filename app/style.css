@@ -23,7 +23,7 @@ body {
   padding: 0 20px 48px;
   background: var(--paper);
   color: var(--ink);
-  font: 16px/1.5 system-ui, -apple-system, "Segoe UI", sans-serif;
+  font: 17px/1.5 system-ui, -apple-system, "Segoe UI", sans-serif;
 }
 
 a { color: var(--green); }
@@ -43,12 +43,12 @@ a { color: var(--green); }
 }
 .masthead h1 {
   margin: 4px 0 0;
-  font: 700 52px/1 Georgia, "Times New Roman", serif;
+  font: 700 56px/1 Georgia, "Times New Roman", serif;
   letter-spacing: 0.01em;
 }
 .tagline {
   margin: 4px 0 0;
-  font: italic 17px Georgia, serif;
+  font: italic 19px Georgia, serif;
   color: var(--muted);
 }
 
@@ -67,18 +67,18 @@ a { color: var(--green); }
   text-align: center;
 }
 .proof .box:last-child { border-right: 0; }
-.proof b { display: block; font: 700 26px/1.1 Georgia, serif; }
+.proof b { display: block; font: 700 34px/1.1 Georgia, serif; }
 .proof span { display: block; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; }
 .proof i { display: block; font-size: 11px; font-style: normal; color: var(--muted); }
 
 /* Verdict ledger bar */
 .ledgerbar { margin: 14px 0 0; }
-.bar { display: flex; height: 30px; border: 1px solid var(--ink); overflow: hidden; }
+.bar { display: flex; height: 36px; border: 1px solid var(--ink); overflow: hidden; }
 .seg {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 12px;
+  font-size: 15px;
   font-weight: 700;
   white-space: nowrap;
   overflow: hidden;
@@ -88,7 +88,7 @@ a { color: var(--green); }
 .seg.v-routine { background: var(--grey-bg); color: var(--grey); }
 .barsum { margin: 6px 0 0; font-size: 13px; color: var(--muted); }
 
-h2 { font: 700 22px Georgia, serif; margin: 20px 0 10px; }
+h2 { font: 700 26px Georgia, serif; margin: 20px 0 10px; }
 
 /* Controls */
 .controls {
@@ -105,7 +105,7 @@ h2 { font: 700 22px Georgia, serif; margin: 20px 0 10px; }
   display: block;
   margin-top: 3px;
   padding: 7px 8px;
-  font: 15px system-ui, sans-serif;
+  font: 16px system-ui, sans-serif;
   color: var(--ink);
   background: #fff;
   border: 1px solid #99907f;
@@ -116,12 +116,12 @@ h2 { font: 700 22px Georgia, serif; margin: 20px 0 10px; }
 .countline { margin: 10px 0 6px; font-size: 13px; color: var(--muted); }
 
 /* Board table */
-table.board { width: 100%; border-collapse: collapse; background: var(--card); }
+table.board { width: 100%; border-collapse: collapse; background: var(--card); font-size: 17px; }
 .board th, .board td { padding: 9px 10px; border-bottom: 1px solid var(--rule); text-align: left; vertical-align: top; }
 .board th { font-size: 11px; text-transform: uppercase; letter-spacing: 0.07em; color: var(--muted); border-bottom: 2px solid var(--ink); }
 .board td.n { white-space: nowrap; text-align: right; font-variant-numeric: tabular-nums; }
 .board th:nth-child(n+3) { text-align: right; }
-.board td.t a { font-weight: 600; color: var(--ink); text-decoration: none; }
+.board td.t a { font-weight: 600; font-size: 17px; color: var(--ink); text-decoration: none; }
 .board td.t a:hover { text-decoration: underline; }
 .board .cat { display: block; font-size: 12px; color: var(--muted); }
 .board td.save { color: var(--green); font-weight: 700; }
@@ -132,7 +132,7 @@ table.board { width: 100%; border-collapse: collapse; background: var(--card); }
   display: inline-block;
   padding: 2px 8px;
   border-radius: 20px;
-  font-size: 11px;
+  font-size: 13px;
   font-weight: 800;
   letter-spacing: 0.04em;
   white-space: nowrap;

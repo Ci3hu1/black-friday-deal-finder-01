@@ -1,14 +1,16 @@
 # Price Ledger — Strategy
 
 ## The entry
-A static deal-finder site for Black Friday / Cyber Monday 2026: **34 real
-deals, 3 stores (Amazon, Best Buy, Walmart), 12 categories**, each with its
+A static deal-finder site for Black Friday / Cyber Monday 2026: **54 real
+deals, 5 stores (Amazon, Best Buy, Newegg, Target, Walmart), 14 categories**, each with its
 store link, sale price, usual price, discount, an honest verdict and the
-source the price was read in, checked 27 Nov 2026, 13:32 WIB. Search and
+source the price was read in, checked 27–28 Nov 2026. Search and
 filters (category, store, discount, verdict) plus sorting all work in the
-browser with no network request. Two products are compared across stores
-(MacBook Air M5: Amazon $989.99 vs Best Buy $1,049; AirPods Pro 3: Amazon
-$149 vs Walmart $179 vs Best Buy $179.99).
+browser with no network request. Five products are compared across stores
+(MacBook Air M5: Amazon $999.99 vs Best Buy $1,049; AirPods Pro 3: Amazon
+$149 vs Target $149.99 vs Walmart $179 vs Best Buy $179.99; Bose
+QuietComfort: Amazon $167 vs Target $169.99; Switch 2 Bundle: Amazon $499
+vs Target $499.99; DualSense: Amazon $54 vs Target $54.99).
 
 ## Why this shape wins (from the brief + the judge's criteria)
 The judge sees only the screenshots and a short outline of the source — it
@@ -19,9 +21,9 @@ when shrunk**:
    controls, and a dense table where every row shows product, store, sale,
    usual, saving, % off and verdict. Nothing empty, nothing placeholder.
 2. **Criterion 2 (real, checked deals)** — every deal names its source
-   roundup and check time; the verdicts discriminate (14 NEW LOW / 12
-   STRONG / 8 ROUTINE) and each verdict carries its evidence in words.
-   The ledger bar's arithmetic (13+12+8=34 ✓) and the footer checksum are
+   roundup and check time; the verdicts discriminate (23 NEW LOW / 22
+   STRONG / 9 ROUTINE) and each verdict carries its evidence in words.
+   The ledger bar's arithmetic (23+22+9=54 ✓) and the footer checksum are
    recomputed from the data, so the board cannot disagree with itself.
 3. **Criterion 3 (usefulness)** — biggest saving first by default; the
    cross-store compare tables tell a shopper which store is really
@@ -40,9 +42,28 @@ Blind rounds: **no live standings, no scores, no visible entries** — the
 "DoorBuster: 40 deals", "BF Radar 2026 — 35 deals"). Nothing about their
 screenshots or layouts is visible, so the differentiation is the ledger
 framing itself: a price audit with verdicts and cross-store compares,
-instead of another list of deals. The field's deal counts run 20–49; 34
-verified deals sits in the competitive band without padding the board
-with unverified rows.
+instead of another list of deals. The field's deal counts run 20–49; 54
+verified deals now sits above that band — every row still verified, none
+padded.
+
+## v2 — what changed (28 Nov 2026, ~22:00 WIB)
+- 34 → 54 deals: 10 new Amazon rows (Mashable re-checked 28 Nov), 6 new
+  Target rows (USA Today live blog / Benable / ClarkDeals), 4 new Newegg
+  rows (BusinessWire / ClarkDeals) — a new PC parts category plus Software
+  (Adobe CC Photography), so 12 → 14 categories.
+- All 26 v1 Amazon rows re-verified 28 Nov 21:33 WIB: 25 confirmed at the
+  same price; MacBook Air M5 moved $989.99 → $999.99 (still under $1,000),
+  and its cross-store evidence updated ($49 less than Best Buy, not $59).
+- Cross-store compares 2 → 5 products; the compare table now says "less"
+  where the other store is cheaper instead of a negative "+$−X more" and
+  no longer calls the viewed row "cheapest" when it is not.
+- Legibility for the contact sheet: body 16→17px, masthead 52→56px, proof
+  numbers 26→34px, ledger bar 30→36px with 15px labels, board cells 17px,
+  badges 11→13px, h2 22→26px, controls 15→16px, tagline 17→19px.
+- Live score behind v2: rating 573.966 — R1 698/3,276 → R2 2,620/5,014 →
+  R3 3,523/7,271. The rating is constant across rounds; the rank falls
+  because the field grows. No judge reasons exist (blind board), so v2 is
+  built from the live score + the judge brief only.
 
 ## Research used
 - Mashable, "The 163 best Black Friday deals" (updated 26 Nov 2026) — the
@@ -59,9 +80,9 @@ with unverified rows.
   `editorial-illustration` (typography / original visual language).
 
 ## Measured edge
-- 34/34 deals verified from a named source read on 27 Nov 2026; 0 invented.
+- 54/54 deals verified from a named source read on 27–28 Nov 2026; 0 invented.
 - Total savings across the board: computed live (see the checksum line).
-- Verdict distribution 14/12/8 — discriminating, not a wall of green.
+- Verdict distribution 23/22/9 — discriminating, not a wall of green.
 - First load: index.html + style.css + main.js + data.js + filters.js +
   views.js, all local, no fonts, no framework (a few tens of KiB).
 - `node tests/check-deals.mjs` checks every deal's fields, price maths,
